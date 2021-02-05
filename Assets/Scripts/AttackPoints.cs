@@ -12,7 +12,7 @@ public class AttackPoints : MonoBehaviour
     {
         if (!_attackPoints.ContainsKey(position))
         {
-            Debug.Log($"warning: trying to toggle hitpoint with key: {position}");
+            Debug.Log($"warning: trying to toggle non-existent hitpoint with key: {position}, dictionary keys count: {_attackPoints.Count}");
             return;
         }
 

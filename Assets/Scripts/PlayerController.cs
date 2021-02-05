@@ -11,7 +11,10 @@ public class PlayerController : MonoBehaviour
         { "z", new Vector2(-1, -1) }, { "x", new Vector2(0, -1) }, { "c", new Vector2(1, -1) }
     };
 
+    [SerializeField] Sprite _blindfoldedSprite;
+    Sprite _normalSprite;
     AttackPoints _attackPoints;
+    SpriteRenderer _spriteRenderer;
     bool _canAct;
 
     public IEnumerator HandleTurn()
@@ -30,6 +33,22 @@ public class PlayerController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void BlindfoldOff()
+    {
+        _spriteRenderer.sprite = _normalSprite;
+    }
+
+    public void BlindfoldOn()
+    {
+        _spriteRenderer.sprite = _blindfoldedSprite;
+    }
+
+    void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();    
+        _normalSprite = _spriteRenderer.sprite;
     }
 
     void Start()
@@ -53,4 +72,5 @@ public class PlayerController : MonoBehaviour
 
         _attackPoints.ToggleAttackPoint(_gridAttackPositions[key]);
     }
+
 }

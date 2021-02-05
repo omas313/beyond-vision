@@ -33,6 +33,7 @@ public class TurnController : MonoBehaviour
 
         Turn = 0;
         _isPlayerTurn = true;
+        _playerController.BlindfoldOff();
         ShowEnemyTrails();
     }
 
@@ -42,10 +43,10 @@ public class TurnController : MonoBehaviour
             enemy.ShowNextStep();
     }
     
-    void HideEnemyTrails()
+    void HideEnemies()
     {
         foreach (var enemy in _enemies)
-            enemy.HideNextStep();
+            enemy.Hide();
     }
 
     void Update()
@@ -56,7 +57,7 @@ public class TurnController : MonoBehaviour
             StartCoroutine(AdvanceTurn());
     }
 
-    bool ShouldAdvanceTurn() => Input.GetButtonDown("Advance") && !_isHandlingTurn;
+    // bool ShouldAdvanceTurn() => Input.GetButtonDown("Advance") && !_isHandlingTurn;
 
     IEnumerator AdvanceTurn()
     {
@@ -66,7 +67,8 @@ public class TurnController : MonoBehaviour
         
         if (Turn != 0)
         {
-            HideEnemyTrails();
+            HideEnemies();
+            _playerController.BlindfoldOn();
             _isPlayerTurn = !_isPlayerTurn;
         }
 
@@ -101,7 +103,7 @@ public class TurnController : MonoBehaviour
     void HandleEnemyAction()
     {
         foreach (var enemy in _enemies)
-            enemy.Action();
+            enemy.PerformAction();
     }
 
     IEnumerator HandleAttackPoints()

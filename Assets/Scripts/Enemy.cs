@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
 
     List<GameObject> _path = new List<GameObject>();
     Transform _playerTransform;
+    SpriteRenderer _spriteRenderer;
 
     public void ShowNextStep()
     {
@@ -26,9 +27,15 @@ public class Enemy : MonoBehaviour
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    public void HideNextStep()
+    public void Hide()
     {
+        _spriteRenderer.enabled = false;
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    public void Show()
+    {
+        _spriteRenderer.enabled = true;
     }
 
     public IEnumerator Die()
@@ -43,7 +50,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Action()
+    public void PerformAction()
     {
         var offset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
 
@@ -56,6 +63,12 @@ public class Enemy : MonoBehaviour
     void Attack()
     {
         Debug.Log($"{name} attacked");
+        Show();
+    }
+
+    void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()

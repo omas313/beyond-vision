@@ -31,6 +31,8 @@ public class AttackPoint : MonoBehaviour
 
     public IEnumerator PerformAttack()
     {
+        Enemy.Show();
+        yield return new WaitForSeconds(0.25f);
         _attackBlock.Animate();
         yield return new WaitUntil(() => !_attackBlock.IsAnimationPlaying);
         _attackBlock.Deactivate();
