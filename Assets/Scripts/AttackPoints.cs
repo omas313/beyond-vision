@@ -39,9 +39,14 @@ public class AttackPoints : MonoBehaviour
             }
     }
     
-    void Awake()
+    void Start()
     {
-        foreach (var hitpoint in GetComponentsInChildren<AttackPoint>())
-            _attackPoints[hitpoint.transform.position] = hitpoint;
+        foreach (var attackPoint in GetComponentsInChildren<AttackPoint>())
+        {
+            Vector2 gridPosition = Grid.WorldToGridPosition(attackPoint.transform.localPosition);
+            _attackPoints[gridPosition] = attackPoint;
+        }
+
+        DeactivateAll();
     }
 }

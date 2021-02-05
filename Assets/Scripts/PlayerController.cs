@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Dictionary<string, Vector2> _positions = new Dictionary<string, Vector2>
+    Dictionary<string, Vector2> _gridAttackPositions = new Dictionary<string, Vector2>
     {
         { "q", new Vector2(-1, 1) }, { "w", new Vector2(0, 1) }, { "e", new Vector2(1, 1) }, 
         { "a", new Vector2(-1, 0) },                              { "d", new Vector2(1, 0) }, 
         { "z", new Vector2(-1, -1) }, { "x", new Vector2(0, -1) }, { "c", new Vector2(1, -1) }
     };
 
-    AttackPoints _hitPoints;
+    AttackPoints _attackPoints;
     bool _canAct;
 
     public IEnumerator HandleTurn()
@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("player loop");
 
-            if (Input.anyKeyDown && _positions.ContainsKey(Input.inputString))
-                _hitPoints.ToggleAttackPoint(_positions[Input.inputString]);
+            if (Input.anyKeyDown && _gridAttackPositions.ContainsKey(Input.inputString))
+                _attackPoints.ToggleAttackPoint(_gridAttackPositions[Input.inputString]);
 
             if (Input.GetButtonDown("Advance"))
                 yield break;
@@ -32,13 +32,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void WaitForTurn()
-    {
-    }
-
     void Start()
     {
-        _hitPoints = GetComponentInChildren<AttackPoints>();
+        _attackPoints = GetComponentInChildren<AttackPoints>();
     }
 
     void Update()
@@ -52,9 +48,9 @@ public class PlayerController : MonoBehaviour
             return;
 
         var key = Input.inputString;
-        if (!_positions.ContainsKey(key))
+        if (!_gridAttackPositions.ContainsKey(key))
             return;
 
-        _hitPoints.ToggleAttackPoint(_positions[key]);
+        _attackPoints.ToggleAttackPoint(_gridAttackPositions[key]);
     }
 }

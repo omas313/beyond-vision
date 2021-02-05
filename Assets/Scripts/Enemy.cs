@@ -7,26 +7,22 @@ public class Enemy : MonoBehaviour
 {
     public event Action<Enemy> Died;
 
-    [SerializeField] GameObject _pathSquarePrefab;
-    [SerializeField] Transform _pathParent;
     [SerializeField] ParticleSystem _deathParticles;
+    [SerializeField] GameObject _nextStepGameObject;
 
     List<GameObject> _path = new List<GameObject>();
     Transform _playerTransform;
-    GameObject _nextStepGameObject;
 
     public void ShowNextStep()
     {
         if (_playerTransform == null)
             _playerTransform = FindObjectOfType<PlayerController>().transform;
 
-        var offset = _playerTransform.position - transform.position;
-        var step = new Vector2(Math.Sign(offset.x), Math.Sign(offset.y));
+        var worldOffset = _playerTransform.position - transform.position;
+        var step = Grid.GridToWorldPosition(Math.Sign(worldOffset.x), Math.Sign(worldOffset.y));
         var nextPosition = (Vector2)transform.position + step;
         
-        if (_nextStepGameObject == null)
-            _nextStepGameObject = Instantiate(_pathSquarePrefab, nextPosition, Quaternion.identity, transform);
-        
+        _nextStepGameObject.transform.position = nextPosition;
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
@@ -49,16 +45,12 @@ public class Enemy : MonoBehaviour
 
     public void Action()
     {
-        var offset = _playerTransform.position - transform.position;
+        var offset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
 
         if (OneSquareAway(offset))
-        {
             Attack();
-            return;
-        }
-        
-        // DrawPath();
-        MoveNSquares(offset, n: 1);
+        else
+            MoveNSquares(offset, n: 1);
     }
 
     void Attack()
@@ -72,37 +64,6 @@ public class Enemy : MonoBehaviour
         // DrawPath();
     }
 
-    void DrawPath()
-    {
-        var offset = _playerTransform.position - transform.position;
-
-        var step = new Vector2(Math.Sign(offset.x), Math.Sign(offset.y));
-        var start = (Vector2)transform.position + step;
-        var end = (Vector2)_playerTransform.position - step;
-
-        foreach (var tile in _path)
-            Destroy(tile);
-        _path.Clear();
-
-        var current = new Vector2(start.x, start.y);
-        var loops = 0;
-        while (current != end)
-        {
-            _path.Add(Instantiate(_pathSquarePrefab, current, Quaternion.identity, _pathParent));
-            current += step;
-
-            loops++;
-            if (loops > 20)
-            {
-                Debug.Log($"more than 20 loops; breaking; current: {current}");
-                break;
-            }
-        } 
-        _path.Add(Instantiate(_pathSquarePrefab, end, Quaternion.identity, _pathParent));
-
-    }
-
-
     void MoveNSquares(Vector2 offset, int n)
     {
         // todo: implement movement by n, must check if n > dist to player then just move next to player
@@ -112,8 +73,38 @@ public class Enemy : MonoBehaviour
         if (offset.y != 0)
             offset.y = Math.Sign(offset.y);
 
-        transform.Translate(offset);
+        transform.Translate(Grid.GridToWorldPosition(offset));
     }
 
     bool OneSquareAway(Vector2 offset) => Math.Abs(offset.x) == 1 || Math.Abs(offset.y) == 1;
+
+    void DrawPath()
+    {
+        // var offset = _playerTransform.position - transform.position;
+
+        // var step = new Vector2(Math.Sign(offset.x), Math.Sign(offset.y));
+        // var start = (Vector2)transform.position + step;
+        // var end = (Vector2)_playerTransform.position - step;
+
+        // foreach (var tile in _path)
+        //     Destroy(tile);
+        // _path.Clear();
+
+        // var current = new Vector2(start.x, start.y);
+        // var loops = 0;
+        // while (current != end)
+        // {
+        //     _path.Add(Instantiate(_pathSquarePrefab, current, Quaternion.identity)); //, _pathParent));
+        //     current += step;
+
+        //     loops++;
+        //     if (loops > 20)
+        //     {
+        //         Debug.Log($"more than 20 loops; breaking; current: {current}");
+        //         break;
+        //     }
+        // } 
+        // _path.Add(Instantiate(_pathSquarePrefab, end, Quaternion.identity)); //, _pathParent));
+
+    }
 }

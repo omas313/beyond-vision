@@ -33,7 +33,7 @@ public class TurnController : MonoBehaviour
 
         Turn = 0;
         _isPlayerTurn = true;
-        // HandlePlayerTurn();
+        ShowEnemyTrails();
     }
 
     void ShowEnemyTrails()
@@ -64,13 +64,11 @@ public class TurnController : MonoBehaviour
 
         _isHandlingTurn = true;
         
-        if (Turn == 0)
+        if (Turn != 0)
         {
             HideEnemyTrails();
-            _isPlayerTurn = true;
-        }
-        else 
             _isPlayerTurn = !_isPlayerTurn;
+        }
 
         Turn++;
 
@@ -98,11 +96,6 @@ public class TurnController : MonoBehaviour
         yield return HandleAttackPoints();
 
         Debug.Log("enemy turn over, advancing");
-    }
-
-    void BlockPlayerAction()
-    {
-        _playerController.WaitForTurn();
     }
 
     void HandleEnemyAction()
