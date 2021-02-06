@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PaginatedTextController : MonoBehaviour
+public class UIPaginatedTextController : MonoBehaviour
 {
     public static bool IsPaginationActive;
 
@@ -45,7 +45,7 @@ public class PaginatedTextController : MonoBehaviour
 
     bool ShouldTurnOn() => Input.GetButtonDown(_buttonName) && !IsActive && !IsPaginationActive;
 
-    bool ShouldAdvancePage() => (Input.GetButtonDown(_buttonName) || Input.GetButtonDown("Advance")) && IsActive;
+    bool ShouldAdvancePage() => Input.GetButtonDown(_buttonName) && IsActive;
 
     void SetActivePage(int index)
     {

@@ -6,16 +6,10 @@ using UnityEngine;
 public class UIMainMenuController : MonoBehaviour
 {
     [SerializeField] bool _shouldPlayIntro = true;
-    [SerializeField] GameObject _fadeOutImage;
-    [SerializeField] GameObject _fadeInImage;
+    [SerializeField] UIAnimatedFadeImage _fadeInImage;
 
     bool _hasRequestedStart;
     
-    void Awake()
-    {
-        _fadeOutImage.SetActive(true);
-    }
-
     void Update()
     {
         if (ShouldStart())
@@ -25,14 +19,14 @@ public class UIMainMenuController : MonoBehaviour
         }
     }
     
-    bool ShouldStart() => !PaginatedTextController.IsPaginationActive && !_hasRequestedStart && Input.GetButtonDown("Advance");
+    bool ShouldStart() => !UIPaginatedTextController.IsPaginationActive && !_hasRequestedStart && Input.GetButtonDown("Advance");
 
     IEnumerator LoadLevel()
     {
-        _fadeInImage.SetActive(true);
+        _fadeInImage.Play();
 
         yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil(() => !_fadeInImage.GetComponent<Animation>().isPlaying);
+        yield return new WaitUntil(() => _fadeInImage.IsAnimationCompleted);
         yield return new WaitForSeconds(0.25f);
 
         GameManager.Instance.LoadLevelScene();

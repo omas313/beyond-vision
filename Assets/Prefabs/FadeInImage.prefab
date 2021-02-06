@@ -111,5 +111,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: FadeInImage
       objectReference: {fileID: 0}
+    - target: {fileID: 9188994970641900811, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
+      propertyPath: _playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9188994970641900811, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
+      propertyPath: _disableOnAnimationCompleted
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
