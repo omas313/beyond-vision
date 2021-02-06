@@ -8,14 +8,17 @@ public class UIGameCanvasManager : MonoBehaviour
 {
     [SerializeField] Text _enemyCountText;
     [SerializeField] Text _mpCountText;
-    [SerializeField] GameObject _fadeOutImage;
+    [SerializeField] Text _levelText;
+    [SerializeField] UIAnimatedFadeImage _fadeOutImage;
 
     TurnController _turnController;
     PlayerController _playerController;
 
-    public void Init()
+    public void Init(int level)
     {
-        _fadeOutImage.SetActive(true);
+        _fadeOutImage.Play();
+
+        _levelText.text = level.ToString();
 
         if (_turnController != null)
             _turnController.EnemyCountChanged -= OnEnemyCountChanged;

@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] bool _forceLoadLevel;
-    [SerializeField] int _levelToLoad = 0;
-
     public static GameManager Instance { get; private set; }
 
     public int CurrentLevel { get; private set; }
+
+    [SerializeField] bool _forceLoadLevel;
+    [SerializeField] int _levelToLoad = 0;
 
     TurnController _turnController;
 
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
             CurrentLevel = _levelToLoad;
         else
             CurrentLevel = 1;
-            
+
         LoadNextLevel();
     }
 
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     void InitLevel()
     {
         _turnController.Init();
-        FindObjectOfType<UIGameCanvasManager>().Init();
+        FindObjectOfType<UIGameCanvasManager>().Init(CurrentLevel);
     }
 
     string GetLevelName(int level) => $"Level-{level}";
