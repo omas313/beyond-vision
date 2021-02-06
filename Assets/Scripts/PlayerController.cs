@@ -69,7 +69,9 @@ public class PlayerController : MonoBehaviour
         _attackPoints = GetComponentInChildren<AttackPoints>();
     }
     
-    bool ShouldToggleAttackPoint() => Input.anyKeyDown && _gridAttackPositions.ContainsKey(Input.inputString);
+    bool ShouldToggleAttackPoint() => Input.anyKeyDown 
+        && _gridAttackPositions.ContainsKey(Input.inputString) 
+        && _attackPoints.IsAttackPointOnGrid(_gridAttackPositions[Input.inputString]);
 
     void ToggleAttackPoint()
     {

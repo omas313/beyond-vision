@@ -11,17 +11,23 @@ public class AttackPoints : MonoBehaviour
     // [SerializeField] float _toggleDuration = 0.2f;
     Dictionary<Vector2, AttackPoint> _attackPoints = new Dictionary<Vector2, AttackPoint>();
 
-    public bool IsAttackPointActive(Vector2 position) => _attackPoints[position].IsActive;
+    public bool IsAttackPointActive(Vector2 gridPosition) => _attackPoints[gridPosition].IsActive;
 
-    public void ToggleAttackPoint(Vector2 position)
+    public bool IsAttackPointOnGrid(Vector2 gridPosition)
     {
-        if (!_attackPoints.ContainsKey(position))
+        var viewportPosition = Camera.main.WorldToViewportPoint(_attackPoints[gridPosition].transform.position);
+        return Grid.IsViewportPositionOnGrid(viewportPosition);
+    }
+
+    public void ToggleAttackPoint(Vector2 gridPosition)
+    {
+        if (!_attackPoints.ContainsKey(gridPosition))
         {
-            Debug.Log($"warning: trying to toggle non-existent hitpoint with key: {position}, dictionary keys count: {_attackPoints.Count}");
+            Debug.Log($"warning: trying to toggle non-existent hitpoint with key: {gridPosition}, dictionary keys count: {_attackPoints.Count}");
             return;
         }
 
-        _attackPoints[position].Toggle();
+        _attackPoints[gridPosition].Toggle();
     }
 
     public void DeactivateAll()
