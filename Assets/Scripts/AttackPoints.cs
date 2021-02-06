@@ -1,12 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AttackPoints : MonoBehaviour
 {
+    public int ToggledAttackPointsCount => _attackPoints.Values.Where(ap => ap.IsActive).Count();
+
     // [SerializeField] float _toggleDuration = 0.2f;
     Dictionary<Vector2, AttackPoint> _attackPoints = new Dictionary<Vector2, AttackPoint>();
+
+    public bool IsAttackPointActive(Vector2 position) => _attackPoints[position].IsActive;
 
     public void ToggleAttackPoint(Vector2 position)
     {
@@ -28,15 +33,17 @@ public class AttackPoints : MonoBehaviour
 
     public IEnumerator HandleTriggers()
     {
-        Debug.Log("handling triggers");
+        // Debug.Log("handling triggers");
         yield return new WaitForSeconds(0.1f); // for colliders to register
 
         foreach (var attackPoint in _attackPoints.Values)
-            if (attackPoint.HasEnemy)
-            {
-                attackPoint.Deactivate();
-                yield return attackPoint.PerformAttack();
-            }
+        {
+            if (!attackPoint.IsActive)
+                continue;
+                
+            attackPoint.Deactivate();
+            yield return attackPoint.PerformAttack();
+        }
     }
     
     void Start()

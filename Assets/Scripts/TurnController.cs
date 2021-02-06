@@ -7,37 +7,59 @@ using UnityEngine.UI;
 
 public class TurnController : MonoBehaviour
 {
-    public int Turn { get; private set; }
+    public event Action LevelCompleted;
+    public event Action LevelFailed;
+    public event Action<int> EnemyCountChanged;
 
-
-    [SerializeField] Text _text;
+    public int CurrentTurn { get; private set; }
+    public int EnemyCount => _enemies.Count;
 
     PlayerController _playerController;
     List<Enemy> _enemies = new List<Enemy>();
     AttackPoints _attackPoints;
 
-    bool IsFirstTurn => Turn == 0;
+    bool IsFirstTurn => CurrentTurn == 0;
     bool _isPlayerTurn;
     bool _isHandlingTurn;
 
-    void Start()
+    bool _isInitialized;
+    bool _isLevelOver;
+
+    public void Init()
     {
+        if (_playerController != null)
+            _playerController.Hit -= OnPlayerHit;
+
         _playerController = FindObjectOfType<PlayerController>();
+        _playerController.Hit += OnPlayerHit;
         _attackPoints = FindObjectOfType<AttackPoints>();
 
+        _enemies.Clear();
         foreach (var enemy in FindObjectsOfType<Enemy>())
         {
             _enemies.Add(enemy);
             enemy.Died += OnEnemyDied;
         }
+        EnemyCountChanged?.Invoke(EnemyCount);
 
-        Turn = 0;
+        _playerController.SetMP(EnemyCount + EnemyCount / 2);
+
+        CurrentTurn = 0;
         _isPlayerTurn = true;
         _playerController.BlindfoldOff();
-        ShowEnemyTrails();
+        ShowEnemyNextSteps();
+
+        _isLevelOver = false;
+        _isInitialized = true;
     }
 
-    void ShowEnemyTrails()
+    void OnPlayerHit()
+    {
+        _isLevelOver = true;
+        LevelFailed?.Invoke();
+    }
+
+    void ShowEnemyNextSteps()
     {
         foreach (var enemy in _enemies)
             enemy.ShowNextStep();
@@ -51,13 +73,12 @@ public class TurnController : MonoBehaviour
 
     void Update()
     {
-        _text.text = _isPlayerTurn ? "player" : "enemy";
+        if (!_isInitialized || _isLevelOver)
+            return;
 
         if (IsFirstTurn || !_isHandlingTurn)
             StartCoroutine(AdvanceTurn());
     }
-
-    // bool ShouldAdvanceTurn() => Input.GetButtonDown("Advance") && !_isHandlingTurn;
 
     IEnumerator AdvanceTurn()
     {
@@ -65,21 +86,23 @@ public class TurnController : MonoBehaviour
 
         _isHandlingTurn = true;
         
-        if (Turn != 0)
+        if (CurrentTurn != 0)
         {
-            HideEnemies();
             _playerController.BlindfoldOn();
             _isPlayerTurn = !_isPlayerTurn;
         }
 
-        Turn++;
+        if (CurrentTurn == 1)
+            HideEnemies();
+
+        CurrentTurn++;
 
         if (_isPlayerTurn)
             yield return HandlePlayerTurn();
         else
             yield return HandleEnemyTurn();
 
-        Debug.Log("finished turn");
+        // Debug.Log("finished turn");
 
         _isHandlingTurn = false;
     }
@@ -91,13 +114,13 @@ public class TurnController : MonoBehaviour
 
     IEnumerator HandleEnemyTurn()
     {
-        Debug.Log("enemy turn");
+        // Debug.Log("enemy turn");
 
         HandleEnemyAction();
-        Debug.Log("handling attack points");
+        // Debug.Log("handling attack points");
         yield return HandleAttackPoints();
 
-        Debug.Log("enemy turn over, advancing");
+        // Debug.Log("enemy turn over, advancing");
     }
 
     void HandleEnemyAction()
@@ -117,5 +140,12 @@ public class TurnController : MonoBehaviour
         if (_enemies.Contains(enemy))
             _enemies.Remove(enemy);
         enemy.Died -= OnEnemyDied;
+
+        EnemyCountChanged?.Invoke(EnemyCount);
+        if (EnemyCount == 0)
+        {
+            _isLevelOver = true;
+            LevelCompleted?.Invoke();
+        }
     }
 }

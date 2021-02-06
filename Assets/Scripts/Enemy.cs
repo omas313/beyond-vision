@@ -55,14 +55,17 @@ public class Enemy : MonoBehaviour
         var offset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
 
         if (OneSquareAway(offset))
+        {
+            Show();
             Attack();
+        }
         else
             MoveNSquares(offset, n: 1);
     }
 
     void Attack()
     {
-        Debug.Log($"{name} attacked");
+        _playerTransform.GetComponent<PlayerController>().TakeHit();
         Show();
     }
 
