@@ -18,6 +18,11 @@ public class UIAnimatedFadeImage : MonoBehaviour
         StartCoroutine(PlayAndDeactivate());
     }
 
+    public void Deactivate()
+    {
+        GetComponent<Image>().enabled = false;
+    }
+    
     void Awake()
     {
         _animation = GetComponent<Animation>();    
@@ -37,7 +42,8 @@ public class UIAnimatedFadeImage : MonoBehaviour
         yield return new WaitUntil(() => !_animation.isPlaying);
 
         if (_disableOnAnimationCompleted)
-            GetComponent<Image>().enabled = false;
+            Deactivate();
+
         IsAnimationCompleted = true;
     }
 }

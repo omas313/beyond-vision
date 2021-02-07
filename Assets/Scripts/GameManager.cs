@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour
     {
         _turnController = FindObjectOfType<TurnController>();
         _turnController.LevelCompleted += OnLevelCompleted;
-        _turnController.LevelFailed += OnLevelFailed;
+
+        FindObjectOfType<UIGameCanvasManager>().ReloadRequested += OnReloadRequested;
 
         if (_forceLoadLevel)
             CurrentLevel = _levelToLoad;
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
         LoadNextLevel();
     }
 
-    void OnLevelFailed()
+    void OnReloadRequested()
     {
         ReloadLevel();
     }

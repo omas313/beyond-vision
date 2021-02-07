@@ -45,6 +45,7 @@ public class TurnController : MonoBehaviour
         _isPlayerTurn = true;
         _playerController.BlindfoldOff();
         ShowEnemyNextSteps();
+        UpdateDangerAlert();
 
         _isLevelOver = false;
         _isInitialized = true;
