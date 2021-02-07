@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] int _stepsPerTurn = 1;
     [SerializeField] ParticleSystem _deathParticles;
+    [SerializeField] ParticleSystem _loopingFireParticles;
     [SerializeField] GameObject _nextStepGameObject;
 
     List<GameObject> _path = new List<GameObject>();
@@ -45,6 +46,7 @@ public class Enemy : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         
+        _loopingFireParticles.Stop();
         _deathParticles.Play();
         yield return AudioManager.Instance.PlayPlayerDeathSound();
         yield return new WaitUntil(() => !_deathParticles.isPlaying);
