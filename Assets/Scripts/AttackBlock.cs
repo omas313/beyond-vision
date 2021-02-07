@@ -5,6 +5,8 @@ public class AttackBlock : MonoBehaviour
 {
     public bool IsAnimationPlaying => _animation.isPlaying;
     
+    [SerializeField] ParticleSystem _impactParticles;
+
     SpriteRenderer _spriteRenderer;
     CameraShaker _cameraShaker;
     Animation _animation;
@@ -26,6 +28,7 @@ public class AttackBlock : MonoBehaviour
     public void OnAnimationImpact()
     {
         _cameraShaker.ShakeCamera();
+        _impactParticles.Play();
     }
 
     void Awake()
