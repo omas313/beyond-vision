@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip _blipSound;
     [SerializeField] AudioClip _enemyRevealSound;
     [SerializeField] AudioClip _enemyAttackSound;
+    [SerializeField] AudioClip _playerAttackApprochingSound;
     [SerializeField] AudioClip _playerDeathSound;
     [SerializeField] Range _blipPitchRange;
     [SerializeField] Range _blipVolumeRange;
@@ -28,6 +29,13 @@ public class AudioManager : MonoBehaviour
         _audioSource.loop = true;
         _audioSource.clip = _blipSound;
         _audioSource.Play();
+    }
+
+    public void PlayPlayerAttackApprochingSound()
+    {
+        SetupForOneShot();
+        _audioSource.PlayOneShot(_playerAttackApprochingSound);
+        // yield return new WaitForSeconds(_enemyRevealSound.length + 0.1f);
     }
 
     [ContextMenu("play high blip")]

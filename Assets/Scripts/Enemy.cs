@@ -45,6 +45,7 @@ public class Enemy : MonoBehaviour
         GetComponent<Rigidbody2D>().simulated = false;
         
         _deathParticles.Play();
+        yield return AudioManager.Instance.PlayPlayerDeathSound();
         yield return new WaitUntil(() => !_deathParticles.isPlaying);
         Died?.Invoke(this);
         Destroy(gameObject);

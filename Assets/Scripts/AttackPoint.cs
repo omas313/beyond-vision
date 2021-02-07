@@ -36,11 +36,17 @@ public class AttackPoint : MonoBehaviour
 
         yield return new WaitForSeconds(0.25f);
         _attackBlock.Animate();
+        AudioManager.Instance.PlayPlayerAttackApprochingSound();
         yield return new WaitUntil(() => !_attackBlock.IsAnimationPlaying);
         _attackBlock.Deactivate();
 
         if (HasEnemy)
+        {
+            AudioManager.Instance.PlayPlayerDeathSound();
             yield return Enemy.Die();
+        }
+        else
+            yield return AudioManager.Instance.PlayPlayerDeathSound();
     }
 
     void Awake()
