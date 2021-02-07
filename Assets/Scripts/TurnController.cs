@@ -92,8 +92,8 @@ public class TurnController : MonoBehaviour
             _isPlayerTurn = !_isPlayerTurn;
         }
 
-        if (CurrentTurn == 1)
-            HideEnemies();
+        // if (CurrentTurn == 1)
+        //     HideEnemies();
 
         CurrentTurn++;
 

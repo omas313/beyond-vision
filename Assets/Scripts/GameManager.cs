@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("GM Start");
+        // Debug.Log("GM Start");
         if (SceneManager.GetActiveScene().buildIndex != 0)
             LoadLevelScene();
     }
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     void OnLevelCompleted()
     {
-        Debug.Log("on level completed");
+        // Debug.Log("on level completed");
 
         var op = SceneManager.UnloadSceneAsync(GetLevelName(CurrentLevel));
         op.completed += OnUnloadComplete;
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
 
     void OnUnloadComplete(AsyncOperation obj)
     {
-        Debug.Log("unload level completed");
+        // Debug.Log("unload level completed");
 
         if (CurrentLevel == 0)
             LoadMainMenu();
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
 
     void LoadNextLevel()
     {
-        Debug.Log("load next level");
+        // Debug.Log("load next level");
 
         var op = SceneManager.LoadSceneAsync(GetLevelName(CurrentLevel), LoadSceneMode.Additive);
         op.completed += OnLoadLevelCompleted;
@@ -92,13 +92,13 @@ public class GameManager : MonoBehaviour
 
     void OnLoadLevelCompleted(AsyncOperation obj)
     {
-        Debug.Log("load level completed");
+        // Debug.Log("load level completed");
         InitLevel();
     }
 
     void LoadMainMenu()
     {
-        Debug.Log("load main menu");
+        // Debug.Log("load main menu");
         SceneManager.LoadSceneAsync(0);
     }
     
