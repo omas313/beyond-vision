@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour
 {
     public event Action<Enemy> Died;
 
+    public int NumbersOfSquaresAway => CalculateNumbersOfSquaresAway();
+
     [SerializeField] int _stepsPerTurn = 1;
     [SerializeField] ParticleSystem _deathParticles;
     [SerializeField] GameObject _nextStepGameObject;
@@ -20,20 +22,7 @@ public class Enemy : MonoBehaviour
         if (_playerTransform == null)
             _playerTransform = FindObjectOfType<PlayerController>().transform;
 
-        // var worldOffset = _playerTransform.position - transform.position;
-        // var step = Grid.GridToWorldPosition(Math.Sign(worldOffset.x), Math.Sign(worldOffset.y)) * _stepsPerTurn;
-        // var nextPosition = (Vector2)transform.position + step;
-
-        var gridOffset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
-        var gridStep = new Vector2(Math.Sign(gridOffset.x), Math.Sign(gridOffset.y));
-        var worldStep = Grid.GridToWorldPosition(gridStep);
-
-        var nextPosition = (Vector2)transform.position + worldStep *_stepsPerTurn;
-        if (IsValidPosition(nextPosition))
-            _nextStepGameObject.transform.position = nextPosition;
-        else
-            _nextStepGameObject.transform.position = (Vector2)_playerTransform.position - worldStep;
-        
+        _nextStepGameObject.transform.position = CalculateNextWorldStep();
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
@@ -46,6 +35,7 @@ public class Enemy : MonoBehaviour
     public void Show()
     {
         _spriteRenderer.enabled = true;
+        _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public IEnumerator Die()
@@ -60,17 +50,23 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void PerformAction()
+    public void Move()
     {
         var gridOffset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
+        MoveNSquares(gridOffset);
+    }
 
+    public IEnumerator TryAttack()
+    {
+        var gridOffset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
         if (OneSquareAway(gridOffset))
         {
             Show();
+            yield return AudioManager.Instance.PlayEnemyAttackSound();
             Attack();
+            yield return AudioManager.Instance.PlayPlayerDeathSound();
         }
-        else
-            MoveNSquares(gridOffset);
+        yield return null;
     }
 
     void Awake()
@@ -99,18 +95,36 @@ public class Enemy : MonoBehaviour
             transform.position = nextPosition;
         else
             transform.position = (Vector2)_playerTransform.position - worldStep;
+
     }
 
-    private bool IsValidPosition(Vector2 nextPosition)
-    {
-        if (nextPosition == (Vector2)_playerTransform.position)
-            return false;
-
-        
-        return true;
-    }
+    bool IsValidPosition(Vector2 nextPosition) => nextPosition != (Vector2)_playerTransform.position;
 
     bool OneSquareAway(Vector2 offset) => Math.Abs(offset.x) == 1 || Math.Abs(offset.y) == 1;
+
+    Vector2 CalculateNextWorldStep()
+    {
+        var gridOffset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
+        var gridStep = new Vector2(Math.Sign(gridOffset.x), Math.Sign(gridOffset.y));
+        var worldStep = Grid.GridToWorldPosition(gridStep);
+        var nextPosition = (Vector2)transform.position + worldStep * _stepsPerTurn;
+
+        if (IsValidPosition(nextPosition))
+            return nextPosition;
+        else
+            return (Vector2)_playerTransform.position - worldStep;
+    }
+
+    int CalculateNumbersOfSquaresAway()
+    {
+        var nextWorldStep = CalculateNextWorldStep();
+        var gridOffset = Grid.WorldToGridPosition((Vector2)_playerTransform.position - nextWorldStep);
+
+        if (gridOffset.x == 0)
+            return (int)Math.Abs(gridOffset.y);
+        else 
+            return (int)Math.Abs(gridOffset.x);
+    }
 
     void DrawPath()
     {

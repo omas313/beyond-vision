@@ -82,7 +82,7 @@ public class TurnController : MonoBehaviour
 
     IEnumerator AdvanceTurn()
     {
-        Debug.Log("advance turn");
+        // Debug.Log("advance turn");
 
         _isHandlingTurn = true;
         
@@ -100,10 +100,13 @@ public class TurnController : MonoBehaviour
         if (_isPlayerTurn)
             yield return HandlePlayerTurn();
         else
+        {
             yield return HandleEnemyTurn();
+            UpdateDangerAlert();
+        }
+
 
         // Debug.Log("finished turn");
-
         _isHandlingTurn = false;
     }
 
@@ -116,23 +119,46 @@ public class TurnController : MonoBehaviour
     {
         // Debug.Log("enemy turn");
 
-        HandleEnemyAction();
+        HandleEnemyMovement();
         // Debug.Log("handling attack points");
         yield return HandleAttackPoints();
+        yield return HandleEnemyAttack();
 
         // Debug.Log("enemy turn over, advancing");
     }
 
-    void HandleEnemyAction()
+    void HandleEnemyMovement()
     {
         foreach (var enemy in _enemies)
-            enemy.PerformAction();
+            enemy.Move();
+    }
+    IEnumerator HandleEnemyAttack()
+    {
+        foreach (var enemy in _enemies)
+            yield return enemy.TryAttack();
     }
 
     IEnumerator HandleAttackPoints()
     {
         yield return _attackPoints.HandleTriggers();
         _attackPoints.DeactivateAll();
+    }
+
+    void UpdateDangerAlert()
+    {
+        int squaresAway = int.MaxValue;
+        foreach (var enemy in _enemies)
+        {
+            squaresAway = Math.Min(squaresAway, enemy.NumbersOfSquaresAway);
+            Debug.Log($"squares away: {squaresAway}");
+        }
+
+        
+        
+        if (squaresAway == 1)
+            AudioManager.Instance.PlayHighBlipSound();
+        else
+            AudioManager.Instance.PlayLowBlipSound();
     }
     
     void OnEnemyDied(Enemy enemy)
