@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public event Action Hit;
     public event Action<int> MPChanged;
 
+    public bool IsDead { get; private set; }
     public int MP { get; private set; }
 
     [SerializeField] Sprite _blindfoldedSprite;
@@ -24,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator HandleTurn()
     {
-        // Debug.Log("player turn");
+        Debug.Log("player turn");
 
         while (true)
         {
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Death()
     {
+        IsDead = true;
         _hitParticles.Play();
         _spriteRenderer.enabled = false;
         yield return new WaitUntil(() => !_hitParticles.isPlaying);

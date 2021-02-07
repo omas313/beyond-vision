@@ -18,7 +18,7 @@ public class TurnController : MonoBehaviour
     List<Enemy> _enemies = new List<Enemy>();
     AttackPoints _attackPoints;
 
-    bool IsFirstTurn => CurrentTurn == 0;
+    bool IsInitTurn => CurrentTurn == 0;
     bool _isPlayerTurn;
     bool _isHandlingTurn;
 
@@ -27,9 +27,6 @@ public class TurnController : MonoBehaviour
 
     public void Init()
     {
-        if (_playerController != null)
-            _playerController.Hit -= OnPlayerHit;
-
         _playerController = FindObjectOfType<PlayerController>();
         _playerController.Hit += OnPlayerHit;
         _attackPoints = FindObjectOfType<AttackPoints>();
@@ -53,12 +50,6 @@ public class TurnController : MonoBehaviour
         _isInitialized = true;
     }
 
-    void OnPlayerHit()
-    {
-        _isLevelOver = true;
-        LevelFailed?.Invoke();
-    }
-
     void ShowEnemyNextSteps()
     {
         foreach (var enemy in _enemies)
@@ -76,7 +67,7 @@ public class TurnController : MonoBehaviour
         if (!_isInitialized || _isLevelOver)
             return;
 
-        if (IsFirstTurn || !_isHandlingTurn)
+        if (IsInitTurn || !_isHandlingTurn)
             StartCoroutine(AdvanceTurn());
     }
 
@@ -91,11 +82,14 @@ public class TurnController : MonoBehaviour
             _playerController.BlindfoldOn();
             _isPlayerTurn = !_isPlayerTurn;
         }
-
-        // if (CurrentTurn == 1)
+        
+        if (CurrentTurn == 1)
+        {
         //     HideEnemies();
+        }
 
         CurrentTurn++;
+        // Debug.Log($"current turn {CurrentTurn}");
 
         if (_isPlayerTurn)
             yield return HandlePlayerTurn();
@@ -104,7 +98,6 @@ public class TurnController : MonoBehaviour
             yield return HandleEnemyTurn();
             UpdateDangerAlert();
         }
-
 
         // Debug.Log("finished turn");
         _isHandlingTurn = false;
@@ -134,8 +127,16 @@ public class TurnController : MonoBehaviour
     }
     IEnumerator HandleEnemyAttack()
     {
-        foreach (var enemy in _enemies)
+        var enemies = new Enemy[_enemies.Count];
+        _enemies.CopyTo(enemies);
+
+        foreach (var enemy in enemies)
+        {
             yield return enemy.TryAttack();
+            
+            if (_playerController.IsDead)
+                yield break;
+        }
     }
 
     IEnumerator HandleAttackPoints()
@@ -148,19 +149,30 @@ public class TurnController : MonoBehaviour
     {
         int squaresAway = int.MaxValue;
         foreach (var enemy in _enemies)
-        {
             squaresAway = Math.Min(squaresAway, enemy.NumbersOfSquaresAway);
-            Debug.Log($"squares away: {squaresAway}");
-        }
 
-        
-        
         if (squaresAway == 1)
             AudioManager.Instance.PlayHighBlipSound();
         else
             AudioManager.Instance.PlayLowBlipSound();
     }
     
+    void DeregisterEvents()
+    {
+        _playerController.Hit -= OnPlayerHit;
+
+        foreach (var enemy in _enemies)
+            enemy.Died -= OnEnemyDied;
+    }
+
+    void OnPlayerHit()
+    {
+        StopAllCoroutines();
+        _isLevelOver = true;
+        DeregisterEvents();
+        LevelFailed?.Invoke();
+    }
+
     void OnEnemyDied(Enemy enemy)
     {
         if (_enemies.Contains(enemy))
@@ -170,6 +182,7 @@ public class TurnController : MonoBehaviour
         EnemyCountChanged?.Invoke(EnemyCount);
         if (EnemyCount == 0)
         {
+            DeregisterEvents();
             _isLevelOver = true;
             LevelCompleted?.Invoke();
         }
