@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     [SerializeField] AudioClip _blipSound;
+    [SerializeField] AudioClip _enemyRevealSound;
     [SerializeField] AudioClip _enemyAttackSound;
     [SerializeField] AudioClip _playerDeathSound;
     [SerializeField] Range _blipPitchRange;
@@ -41,6 +42,13 @@ public class AudioManager : MonoBehaviour
         _audioSource.loop = true;
         _audioSource.clip = _blipSound;
         _audioSource.Play();
+    }
+
+    public IEnumerator PlayEnemyRevealSound()
+    {
+        SetupForOneShot();
+        _audioSource.PlayOneShot(_enemyRevealSound);
+        yield return new WaitForSeconds(_enemyRevealSound.length + 0.1f);
     }
 
     public IEnumerator PlayEnemyAttackSound()

@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 81d56042a60d017469727f1550a587de, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 99efb423f253ace41b9591924c4055e6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -141,7 +141,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blipSound: {fileID: 8300000, guid: 99efb423f253ace41b9591924c4055e6, type: 3}
-  _enemyAttackSound: {fileID: 8300000, guid: 0fe2fb6995c92da4eb89d29e4ccd5133, type: 3}
+  _enemyRevealSound: {fileID: 8300000, guid: 0fe2fb6995c92da4eb89d29e4ccd5133, type: 3}
+  _enemyAttackSound: {fileID: 8300000, guid: deee49f95f83f094ab630c1aad8461d3, type: 3}
   _playerDeathSound: {fileID: 8300000, guid: c43df48be18033640a08784024120b28, type: 3}
   _blipPitchRange:
     min: 0.6

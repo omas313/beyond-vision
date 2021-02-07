@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] Sprite _blindfoldedSprite;
     [SerializeField] ParticleSystem _hitParticles;
+    [SerializeField] ParticleSystem _deathParticles;
     Dictionary<string, Vector2> _gridAttackPositions = new Dictionary<string, Vector2>
     {
         { "q", new Vector2(-1, 1) }, { "w", new Vector2(0, 1) }, { "e", new Vector2(1, 1) }, 
@@ -41,9 +42,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeHit()
+    public IEnumerator Die()
     {
-        StartCoroutine(Death());
+        IsDead = true;
+        
+        _hitParticles.Play();
+        yield return AudioManager.Instance.PlayEnemyAttackSound();
+        
+        _spriteRenderer.enabled = false;
+        _deathParticles.Play();
+        yield return AudioManager.Instance.PlayPlayerDeathSound();
+        yield return new WaitForSeconds(_deathParticles.main.duration);
+        
+        Hit?.Invoke();
     }
 
     public void BlindfoldOff()
@@ -92,13 +103,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator Death()
-    {
-        IsDead = true;
-        _hitParticles.Play();
-        _spriteRenderer.enabled = false;
-        yield return new WaitUntil(() => !_hitParticles.isPlaying);
-        
-        Hit?.Invoke();
-    }
 }

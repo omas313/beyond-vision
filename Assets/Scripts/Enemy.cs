@@ -62,9 +62,8 @@ public class Enemy : MonoBehaviour
         if (OneSquareAway(gridOffset))
         {
             Show();
-            yield return AudioManager.Instance.PlayEnemyAttackSound();
-            Attack();
-            yield return AudioManager.Instance.PlayPlayerDeathSound();
+            yield return AudioManager.Instance.PlayEnemyRevealSound();
+            yield return Attack();
         }
         yield return null;
     }
@@ -80,9 +79,9 @@ public class Enemy : MonoBehaviour
         // DrawPath();
     }
 
-    void Attack()
+    IEnumerator Attack()
     {
-        _playerTransform.GetComponent<PlayerController>().TakeHit();
+        yield return _playerTransform.GetComponent<PlayerController>().Die();
     }
 
     void MoveNSquares(Vector2 gridOffset)
