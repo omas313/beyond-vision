@@ -18,6 +18,9 @@ public class AudioManager : MonoBehaviour
     [ContextMenu("play low blip")]
     public void PlayLowBlipSound()
     {
+        if (_audioSource.clip == _blipSound && _audioSource.pitch == _blipPitchRange.min)
+            return;
+
         _audioSource.Stop();
         _audioSource.pitch = _blipPitchRange.min;
         _audioSource.volume = _blipVolumeRange.min;
@@ -29,6 +32,9 @@ public class AudioManager : MonoBehaviour
     [ContextMenu("play high blip")]
     public void PlayHighBlipSound()
     {
+        if (_audioSource.clip == _blipSound && _audioSource.pitch == _blipPitchRange.max)
+            return;
+
         _audioSource.Stop();
         _audioSource.pitch = _blipPitchRange.max;
         _audioSource.volume = _blipVolumeRange.max;
