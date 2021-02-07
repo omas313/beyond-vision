@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     List<GameObject> _path = new List<GameObject>();
     Transform _playerTransform;
+    CameraShaker _cameraShaker;
     SpriteRenderer _spriteRenderer;
 
     public void ShowNextStep()
@@ -76,12 +77,14 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        _playerTransform = FindObjectOfType<PlayerController>().transform;        
+        _playerTransform = FindObjectOfType<PlayerController>().transform;
+        _cameraShaker = FindObjectOfType<CameraShaker>();
         // DrawPath();
     }
 
     IEnumerator Attack()
     {
+        _cameraShaker.ShakeCamera();
         yield return _playerTransform.GetComponent<PlayerController>().Die();
     }
 
