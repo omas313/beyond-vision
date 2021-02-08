@@ -86,9 +86,7 @@ public class TurnController : MonoBehaviour
         }
         
         if (CurrentTurn == 1)
-        {
-        //     HideEnemies();
-        }
+            HideEnemies();
 
         CurrentTurn++;
         // Debug.Log($"current turn {CurrentTurn}");

@@ -31,12 +31,14 @@ public class Enemy : MonoBehaviour
     public void Hide()
     {
         _spriteRenderer.enabled = false;
+        _loopingFireParticles.gameObject.SetActive(false);
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public void Show()
     {
         _spriteRenderer.enabled = true;
+        _loopingFireParticles.gameObject.SetActive(true);
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
