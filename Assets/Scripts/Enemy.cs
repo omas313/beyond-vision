@@ -54,9 +54,12 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Move()
+    public void TryMove()
     {
         var gridOffset = Grid.WorldToGridPosition(_playerTransform.position - transform.position);
+        if (OneSquareAway(gridOffset))
+            return;
+
         MoveNSquares(gridOffset);
     }
 
@@ -105,9 +108,10 @@ public class Enemy : MonoBehaviour
 
     bool IsValidPosition(Vector2 nextPosition) => nextPosition != (Vector2)_playerTransform.position;
 
-    bool OneSquareAway(Vector2 offset) => 
-        (Math.Abs(offset.x) == 1 && offset.y == 0)
-        || (Math.Abs(offset.y) == 1 && offset.x == 0);
+    bool OneSquareAway(Vector2 gridOffset) => 
+        (Math.Abs(gridOffset.x) == 1 && gridOffset.y == 0)
+        || (Math.Abs(gridOffset.y) == 1 && gridOffset.x == 0)
+        || (Math.Abs(gridOffset.x) == 1 && Math.Abs(gridOffset.y) == 1);
 
     Vector2 CalculateNextWorldStep()
     {

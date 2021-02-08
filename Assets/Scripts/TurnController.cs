@@ -48,7 +48,7 @@ public class TurnController : MonoBehaviour
 
         _isLevelOver = false;
         _isInitialized = true;
-        
+
         UpdateDangerAlert();
     }
 
@@ -125,7 +125,7 @@ public class TurnController : MonoBehaviour
     void HandleEnemyMovement()
     {
         foreach (var enemy in _enemies)
-            enemy.Move();
+            enemy.TryMove();
     }
     IEnumerator HandleEnemyAttack()
     {
