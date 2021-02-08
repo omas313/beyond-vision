@@ -7,6 +7,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1335698491237180622, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407714696884339336, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022881400478531131, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022881400478531131, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022881400478531131, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1802075133
+      objectReference: {fileID: 0}
     - target: {fileID: 4452429232481151371, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
       propertyPath: EmissionModule.m_BurstCount
       value: 1
@@ -129,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5543510720060102794, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
       propertyPath: m_Name
-      value: Enemy (3)
+      value: Enemy 2-stepper
       objectReference: {fileID: 0}
     - target: {fileID: 5543510720060102794, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
       propertyPath: m_IsActive
@@ -187,5 +207,9 @@ PrefabInstance:
       propertyPath: _stepsPerTurn
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 9020336190651449836, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 575685369645702779, guid: f4d230230268f3e468e8b49c2b9b3d2c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50c5ffa64a0f90e4c89486e4f32e4689, type: 3}

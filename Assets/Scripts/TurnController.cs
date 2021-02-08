@@ -35,6 +35,7 @@ public class TurnController : MonoBehaviour
         foreach (var enemy in FindObjectsOfType<Enemy>())
         {
             _enemies.Add(enemy);
+            enemy.Hide();
             enemy.Died += OnEnemyDied;
         }
         EnemyCountChanged?.Invoke(EnemyCount);
@@ -44,11 +45,24 @@ public class TurnController : MonoBehaviour
         CurrentTurn = 0;
         _isPlayerTurn = true;
         _playerController.BlindfoldOff();
-        ShowEnemyNextSteps();
+       
+       StartCoroutine(SpawnEnemiesAndStart());
+    }
 
+    IEnumerator SpawnEnemiesAndStart()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        foreach (var enemy in _enemies)
+        {
+            enemy.PlayEntryAnimation();
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 0.3f));
+        }
+
+        yield return new WaitForSeconds(0.25f);
+        ShowEnemyNextSteps();
         _isLevelOver = false;
         _isInitialized = true;
-
         UpdateDangerAlert();
     }
 

@@ -13,17 +13,18 @@ public class Enemy : MonoBehaviour
     [SerializeField] ParticleSystem _deathParticles;
     [SerializeField] ParticleSystem _loopingFireParticles;
     [SerializeField] GameObject _nextStepGameObject;
+    [SerializeField] SpriteRenderer _spriteRenderer;
 
     List<GameObject> _path = new List<GameObject>();
     Transform _playerTransform;
     CameraShaker _cameraShaker;
-    SpriteRenderer _spriteRenderer;
 
     public void ShowNextStep()
     {
         if (_playerTransform == null)
             _playerTransform = FindObjectOfType<PlayerController>().transform;
 
+        _nextStepGameObject.SetActive(true);
         _nextStepGameObject.transform.position = CalculateNextWorldStep();
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
@@ -42,9 +43,15 @@ public class Enemy : MonoBehaviour
         _nextStepGameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
+    public void PlayEntryAnimation()
+    {
+        Show();
+        GetComponent<Animation>().Play();
+    }
+
     public IEnumerator Die()
     {
-        GetComponent<SpriteRenderer>().enabled = false;
+        _spriteRenderer.enabled = false;
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         
@@ -75,11 +82,6 @@ public class Enemy : MonoBehaviour
             yield return Attack();
         }
         yield return null;
-    }
-
-    void Awake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
