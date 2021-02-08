@@ -79,6 +79,7 @@ public class UIGameCanvasManager : MonoBehaviour
 
     IEnumerator ShowLevelCompleted()
     {
+        AudioManager.Instance.PlayLevelCompletedSound();
         _levelCompleteAnimator.SetTrigger("Enter");
         yield return new WaitForSeconds(0.1f); // takes some milliseconds to set the new animation
         yield return new WaitUntil(() => _levelCompleteAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f);

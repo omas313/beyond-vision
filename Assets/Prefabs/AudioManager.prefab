@@ -147,6 +147,7 @@ MonoBehaviour:
   _enemyAttackSound: {fileID: 8300000, guid: deee49f95f83f094ab630c1aad8461d3, type: 3}
   _playerAttackApprochingSound: {fileID: 8300000, guid: 0db5493e47c72634181e397918c4089c, type: 3}
   _playerDeathSound: {fileID: 8300000, guid: c43df48be18033640a08784024120b28, type: 3}
+  _levelCompletedSound: {fileID: 8300000, guid: e977c9a491e9d7947b83c03706b31cc0, type: 3}
   _blipPitchRange:
     min: 0.6
     max: 0.8

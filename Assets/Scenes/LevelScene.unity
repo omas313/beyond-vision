@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8d640daaee7574b91c24901b5ce89b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _infiniteMana: 1
+  _infiniteMana: 0
   _forceLoadLevel: 0
   _levelToLoad: 11
 --- !u!4 &1620979584

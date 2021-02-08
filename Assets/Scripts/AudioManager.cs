@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip _enemyAttackSound;
     [SerializeField] AudioClip _playerAttackApprochingSound;
     [SerializeField] AudioClip _playerDeathSound;
+    [SerializeField] AudioClip _levelCompletedSound;
     [SerializeField] Range _blipPitchRange;
     [SerializeField] Range _blipVolumeRange;
     AudioSource _audioSource;
@@ -55,7 +56,12 @@ public class AudioManager : MonoBehaviour
     {
         SetupForOneShot();
         _audioSource.PlayOneShot(_playerAttackApprochingSound);
-        // yield return new WaitForSeconds(_enemyRevealSound.length + 0.1f);
+    }
+
+    public void PlayLevelCompletedSound()
+    {
+        SetupForOneShot();
+        _audioSource.PlayOneShot(_levelCompletedSound);
     }
 
     [ContextMenu("play high blip")]
