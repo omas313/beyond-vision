@@ -11,8 +11,8 @@ public class UIGameCanvasManager : MonoBehaviour
     [SerializeField] Text _enemyCountText;
     [SerializeField] Text _mpCountText;
     [SerializeField] Text _levelText;
-    [SerializeField] UIAnimatedFadeImage _fadeOutImage;
-    [SerializeField] UIAnimatedFadeImage _fadeInImage;
+    [SerializeField] UIAnimatedImage _fadeOutImage;
+    [SerializeField] UIAnimatedImage _fadeInImage;
     [SerializeField] GameObject _reloadPanel;
 
     TurnController _turnController;

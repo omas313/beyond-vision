@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4624882207231884163}
   - component: {fileID: 9188994970641900811}
   m_Layer: 5
-  m_Name: FadeOutImage
+  m_Name: AnimatedUncoverImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,14 +67,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 4fc7180e25e35174d96e0e2d8a1ea4fe, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 2
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!111 &4624882207231884163
@@ -86,9 +86,9 @@ Animation:
   m_GameObject: {fileID: 4624882207231884167}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 5f30c10554c63d243b6868aa6a4d44c6, type: 2}
+  m_Animation: {fileID: 7400000, guid: 5af0b98a73a18ed48a1291376727344b, type: 2}
   m_Animations:
-  - {fileID: 7400000, guid: 5f30c10554c63d243b6868aa6a4d44c6, type: 2}
+  - {fileID: 7400000, guid: 5af0b98a73a18ed48a1291376727344b, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0

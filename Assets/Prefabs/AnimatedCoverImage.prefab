@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 4624882207231884163, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 7400000, guid: 7cf752e5da4f1554fa484d6c817dd389, type: 2}
+      objectReference: {fileID: 7400000, guid: 9dcf1fb0231906048bbb311c858fad52, type: 2}
     - target: {fileID: 4624882207231884163, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
       propertyPath: m_Animations.Array.size
       value: 1
@@ -18,7 +18,7 @@ PrefabInstance:
     - target: {fileID: 4624882207231884163, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
       propertyPath: m_Animations.Array.data[0]
       value: 
-      objectReference: {fileID: 7400000, guid: 7cf752e5da4f1554fa484d6c817dd389, type: 2}
+      objectReference: {fileID: 7400000, guid: 9dcf1fb0231906048bbb311c858fad52, type: 2}
     - target: {fileID: 4624882207231884163, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
       propertyPath: m_Animations.Array.data[1]
       value: 
@@ -109,7 +109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4624882207231884167, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
       propertyPath: m_Name
-      value: FadeInImage
+      value: AnimatedCoverImage
       objectReference: {fileID: 0}
     - target: {fileID: 9188994970641900811, guid: 2e3fba6c74851ce4988b89be465a4544, type: 3}
       propertyPath: _playOnAwake

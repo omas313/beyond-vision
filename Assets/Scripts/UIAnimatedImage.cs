@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIAnimatedFadeImage : MonoBehaviour
+public class UIAnimatedImage : MonoBehaviour
 {
     public bool IsAnimationCompleted { get; private set; }
 

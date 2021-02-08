@@ -6,7 +6,7 @@ using UnityEngine;
 public class UIMainMenuController : MonoBehaviour
 {
     [SerializeField] bool _shouldPlayIntro = true;
-    [SerializeField] UIAnimatedFadeImage _fadeInImage;
+    [SerializeField] UIAnimatedImage _coverImage;
 
     bool _hasRequestedStart;
     
@@ -23,10 +23,10 @@ public class UIMainMenuController : MonoBehaviour
 
     IEnumerator LoadLevel()
     {
-        _fadeInImage.Play();
+        _coverImage.Play();
 
         yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil(() => _fadeInImage.IsAnimationCompleted);
+        yield return new WaitUntil(() => _coverImage.IsAnimationCompleted);
         yield return new WaitForSeconds(0.25f);
 
         GameManager.Instance.LoadLevelScene();
