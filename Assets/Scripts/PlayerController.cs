@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator HandleTurn()
     {
-        Debug.Log("player turn");
+        // Debug.Log("player turn");
 
         while (true)
         {

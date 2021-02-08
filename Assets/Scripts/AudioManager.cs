@@ -16,8 +16,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] Range _blipVolumeRange;
     AudioSource _audioSource;
 
+    public void StopPlaying() => _audioSource.Stop();
 
-    [ContextMenu("play low blip")]
     public void PlayLowBlipSound()
     {
         if (_audioSource.clip == _blipSound && _audioSource.pitch == _blipPitchRange.min)

@@ -45,10 +45,11 @@ public class TurnController : MonoBehaviour
         _isPlayerTurn = true;
         _playerController.BlindfoldOff();
         ShowEnemyNextSteps();
-        UpdateDangerAlert();
 
         _isLevelOver = false;
         _isInitialized = true;
+        
+        UpdateDangerAlert();
     }
 
     void ShowEnemyNextSteps()
@@ -148,6 +149,9 @@ public class TurnController : MonoBehaviour
 
     void UpdateDangerAlert()
     {
+        if (_isLevelOver)
+            return;
+
         int squaresAway = int.MaxValue;
         foreach (var enemy in _enemies)
             squaresAway = Math.Min(squaresAway, enemy.NumbersOfSquaresAway);
@@ -169,9 +173,7 @@ public class TurnController : MonoBehaviour
     void OnPlayerHit()
     {
         StopAllCoroutines();
-        _isLevelOver = true;
-        DeregisterEvents();
-        LevelFailed?.Invoke();
+        EndLevel(fail: true);
     }
 
     void OnEnemyDied(Enemy enemy)
@@ -182,10 +184,18 @@ public class TurnController : MonoBehaviour
         EnemyCountChanged?.Invoke(EnemyCount);
 
         if (EnemyCount == 0)
-        {
-            DeregisterEvents();
-            _isLevelOver = true;
+            EndLevel();
+    }
+
+    void EndLevel(bool fail = false)
+    {
+        AudioManager.Instance.StopPlaying();
+        DeregisterEvents();
+        _isLevelOver = true;
+
+        if (fail)
+            LevelFailed?.Invoke();
+        else
             LevelCompleted?.Invoke();
-        }
     }
 }
