@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class UIMainMenuController : MonoBehaviour
 {
-    [SerializeField] bool _shouldPlayIntro = true;
     [SerializeField] UIAnimatedImage _coverImage;
 
     bool _hasRequestedStart;
+
+    void Start()
+    {
+        AudioManager.Instance.PlayMainMenuMusic();
+    }
     
     void Update()
     {

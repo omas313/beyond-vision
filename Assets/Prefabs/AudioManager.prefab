@@ -140,6 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a837249b6678c3c42b1de0c67b5f836b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuMusic: {fileID: 8300000, guid: 7e2c2522b606bf647a556ccc7f1dafed, type: 3}
+  _endSceneMusic: {fileID: 8300000, guid: 602afb303404b554383d4977f3768297, type: 3}
   _blipSound: {fileID: 8300000, guid: 99efb423f253ace41b9591924c4055e6, type: 3}
   _enemyRevealSound: {fileID: 8300000, guid: 0fe2fb6995c92da4eb89d29e4ccd5133, type: 3}
   _enemyAttackSound: {fileID: 8300000, guid: deee49f95f83f094ab630c1aad8461d3, type: 3}

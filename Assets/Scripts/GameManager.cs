@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +21,12 @@ public class GameManager : MonoBehaviour
         op.completed += OnLevelSceneLoaded;
         
     }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -32,10 +39,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Debug.Log("GM Start");
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (ShouldLoadLevel())
             LoadLevelScene();
     }
+
+    private bool ShouldLoadLevel() => SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 1;
 
     void OnLevelSceneLoaded(AsyncOperation obj)
     {
@@ -66,8 +74,6 @@ public class GameManager : MonoBehaviour
 
     void OnLevelCompleted()
     {
-        // Debug.Log("on level completed");
-
         var op = SceneManager.UnloadSceneAsync(GetLevelName(CurrentLevel));
         op.completed += OnUnloadComplete;
         CurrentLevel++;
@@ -75,8 +81,6 @@ public class GameManager : MonoBehaviour
 
     void OnUnloadComplete(AsyncOperation obj)
     {
-        // Debug.Log("unload level completed");
-
         if (CurrentLevel == 0)
             LoadMainMenu();
         else
@@ -85,29 +89,34 @@ public class GameManager : MonoBehaviour
 
     void LoadNextLevel()
     {
-        // Debug.Log("load next level");
+        var nextLevelName = GetLevelName(CurrentLevel);
 
-        var op = SceneManager.LoadSceneAsync(GetLevelName(CurrentLevel), LoadSceneMode.Additive);
-        op.completed += OnLoadLevelCompleted;
+        try
+        {
+            var op = SceneManager.LoadSceneAsync(nextLevelName, LoadSceneMode.Additive);
+            op.completed += OnLoadLevelCompleted;
+        }
+        catch (NullReferenceException ex)
+        {
+            LoadEndScene();
+        }
     }
 
     void OnLoadLevelCompleted(AsyncOperation obj)
     {
-        // Debug.Log("load level completed");
         InitLevel();
         FindObjectOfType<PlayerController>().IsInfiniteManaModeActive = _infiniteMana;
     }
 
-    void LoadMainMenu()
-    {
-        // Debug.Log("load main menu");
-        SceneManager.LoadSceneAsync(0);
-    }
-    
     void InitLevel()
     {
         _turnController.Init();
         _uiGameCanvasManager.Init(CurrentLevel);
+    }
+
+    void LoadEndScene()
+    {
+        SceneManager.LoadSceneAsync("EndScene");
     }
 
     string GetLevelName(int level) => $"Level-{level}";

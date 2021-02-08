@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
+    [SerializeField] AudioClip _mainMenuMusic;
+    [SerializeField] AudioClip _endSceneMusic;
     [SerializeField] AudioClip _blipSound;
     [SerializeField] AudioClip _enemyRevealSound;
     [SerializeField] AudioClip _enemyAttackSound;
@@ -17,6 +19,24 @@ public class AudioManager : MonoBehaviour
     AudioSource _audioSource;
 
     public void StopPlaying() => _audioSource.Stop();
+
+    public void PlayMainMenuMusic()
+    {
+        _audioSource.Stop();
+        _audioSource.loop = true;
+        _audioSource.volume = 0.35f;
+        _audioSource.clip = _mainMenuMusic;
+        _audioSource.Play();
+    }
+
+    public void PlayEndSceneMusic()
+    {
+        _audioSource.Stop();
+        _audioSource.loop = true;
+        _audioSource.volume = 0.35f;
+        _audioSource.clip = _endSceneMusic;
+        _audioSource.Play();
+    }
 
     public void PlayLowBlipSound()
     {

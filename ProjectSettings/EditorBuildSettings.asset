@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 5b93874c767f1bd4c9eca031a75189fc
   - enabled: 1
+    path: Assets/Scenes/EndScene.unity
+    guid: e1a076adb9986064abce52e5aa15f3bc
+  - enabled: 1
     path: Assets/Scenes/LevelScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
@@ -38,4 +41,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level-9.unity
     guid: 80b51e48e57464e408f02910890a7fca
+  - enabled: 1
+    path: Assets/Scenes/Level-10.unity
+    guid: 1999759fa561357458d98b3210a2ec60
+  - enabled: 1
+    path: Assets/Scenes/Level-11.unity
+    guid: c441450f50e56da4ab2fa55d3f56b0f0
   m_configObjects: {}
