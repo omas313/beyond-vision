@@ -1736,7 +1736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _infiniteMana: 0
   _forceLoadLevel: 0
-  _levelToLoad: 12
+  _levelToLoad: 11
 --- !u!4 &1620979584
 Transform:
   m_ObjectHideFlags: 0
