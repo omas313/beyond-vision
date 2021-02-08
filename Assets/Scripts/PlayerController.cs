@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public event Action Hit;
     public event Action<int> MPChanged;
 
+    public bool IsInfiniteManaModeActive { get; set; }
     public bool IsDead { get; private set; }
     public int MP { get; private set; }
 
@@ -95,7 +96,7 @@ public class PlayerController : MonoBehaviour
             MPChanged?.Invoke(MP);
             _attackPoints.ToggleAttackPoint(position);
         }
-        else if (MP > 0)
+        else if (MP > 0 || IsInfiniteManaModeActive)
         {
             MP--;
             MPChanged?.Invoke(MP);

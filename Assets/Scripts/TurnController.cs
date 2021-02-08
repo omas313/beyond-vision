@@ -179,8 +179,8 @@ public class TurnController : MonoBehaviour
         if (_enemies.Contains(enemy))
             _enemies.Remove(enemy);
         enemy.Died -= OnEnemyDied;
-
         EnemyCountChanged?.Invoke(EnemyCount);
+
         if (EnemyCount == 0)
         {
             DeregisterEvents();

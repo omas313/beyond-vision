@@ -7,39 +7,43 @@ using UnityEngine.UI;
 public class UIGameCanvasManager : MonoBehaviour
 {
     public event Action ReloadRequested;
+    public event Action LevelCompleted;
 
     [SerializeField] Text _enemyCountText;
     [SerializeField] Text _mpCountText;
     [SerializeField] Text _levelText;
-    [SerializeField] UIAnimatedImage _fadeOutImage;
-    [SerializeField] UIAnimatedImage _fadeInImage;
+    [SerializeField] UIAnimatedImage _uiUnconverImage;
+    [SerializeField] UIAnimatedImage _uiCoverImage;
     [SerializeField] GameObject _reloadPanel;
+    [SerializeField] Animator _levelCompleteAnimator;
 
     TurnController _turnController;
     PlayerController _playerController;
 
     public void Init(int level)
     {
-        _fadeInImage.Deactivate();
-        _fadeOutImage.Play();
+        _uiCoverImage.Deactivate();
+        _uiUnconverImage.Play();
         _reloadPanel.SetActive(false);    
 
-        _levelText.text = level.ToString();
 
-        if (_turnController != null)
-            _turnController.EnemyCountChanged -= OnEnemyCountChanged;
+        if (_turnController == null)
+        {
+            _turnController = FindObjectOfType<TurnController>();    
+            _turnController.EnemyCountChanged += OnEnemyCountChanged;
+            _turnController.LevelFailed += OnLevelFailed;
+            _turnController.LevelCompleted += OnLevelCompleted;
+        }
 
-        _turnController = FindObjectOfType<TurnController>();    
-        _turnController.EnemyCountChanged += OnEnemyCountChanged;
-        _turnController.LevelFailed += OnLevelFailed;
+        if (_playerController == null)
+        {
+            _playerController = FindObjectOfType<PlayerController>();
+            _playerController.MPChanged += OnPlayerMPChanged;
+        }
+
         OnEnemyCountChanged(_turnController.EnemyCount);
-
-        if (_playerController != null)
-            _playerController.MPChanged -= OnPlayerMPChanged;
-
-        _playerController = FindObjectOfType<PlayerController>();
-        _playerController.MPChanged += OnPlayerMPChanged;
         OnPlayerMPChanged(_playerController.MP);
+        _levelText.text = level.ToString();
     }
 
     void OnLevelFailed()
@@ -48,11 +52,16 @@ public class UIGameCanvasManager : MonoBehaviour
         StartCoroutine(ShowReloadCanvas());
     }
 
+    void OnLevelCompleted()
+    {
+        StartCoroutine(ShowLevelCompleted());
+    }
+
     IEnumerator ShowReloadCanvas()
     {
-        _fadeInImage.Play();
+        _uiCoverImage.Play();
         yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil(() => _fadeInImage.IsAnimationCompleted);
+        yield return new WaitUntil(() => _uiCoverImage.IsAnimationCompleted);
 
         _reloadPanel.SetActive(true);    
         
@@ -68,13 +77,22 @@ public class UIGameCanvasManager : MonoBehaviour
         }
     }
 
-    void OnEnemyCountChanged(int count)
+    IEnumerator ShowLevelCompleted()
     {
-        _enemyCountText.text = count.ToString();
+        _levelCompleteAnimator.SetTrigger("Enter");
+        yield return new WaitForSeconds(0.1f); // takes some milliseconds to set the new animation
+        yield return new WaitUntil(() => _levelCompleteAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f);
+
+        yield return new WaitForSeconds(1f); 
+
+        _levelCompleteAnimator.SetTrigger("Exit");
+        yield return new WaitForSeconds(0.1f); // takes some milliseconds to set the new animation
+        yield return new WaitUntil(() => _levelCompleteAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f);
+
+        LevelCompleted?.Invoke();
     }
 
-    void OnPlayerMPChanged(int mp)
-    {
-        _mpCountText.text = mp.ToString();
-    }
+    void OnEnemyCountChanged(int count) => _enemyCountText.text = count.ToString();
+
+    void OnPlayerMPChanged(int mp) => _mpCountText.text = mp.ToString();
 }

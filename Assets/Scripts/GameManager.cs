@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,10 +7,12 @@ public class GameManager : MonoBehaviour
 
     public int CurrentLevel { get; private set; }
 
+    [SerializeField] bool _infiniteMana;
     [SerializeField] bool _forceLoadLevel;
     [SerializeField] int _levelToLoad = 0;
 
     TurnController _turnController;
+    UIGameCanvasManager _uiGameCanvasManager;
 
     public void LoadLevelScene()
     {
@@ -41,9 +40,10 @@ public class GameManager : MonoBehaviour
     void OnLevelSceneLoaded(AsyncOperation obj)
     {
         _turnController = FindObjectOfType<TurnController>();
-        _turnController.LevelCompleted += OnLevelCompleted;
+        _uiGameCanvasManager = FindObjectOfType<UIGameCanvasManager>();
 
-        FindObjectOfType<UIGameCanvasManager>().ReloadRequested += OnReloadRequested;
+        _uiGameCanvasManager.ReloadRequested += OnReloadRequested;
+        _uiGameCanvasManager.LevelCompleted += OnLevelCompleted;
 
         if (_forceLoadLevel)
             CurrentLevel = _levelToLoad;
@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
     {
         // Debug.Log("load level completed");
         InitLevel();
+        FindObjectOfType<PlayerController>().IsInfiniteManaModeActive = _infiniteMana;
     }
 
     void LoadMainMenu()
@@ -106,7 +107,7 @@ public class GameManager : MonoBehaviour
     void InitLevel()
     {
         _turnController.Init();
-        FindObjectOfType<UIGameCanvasManager>().Init(CurrentLevel);
+        _uiGameCanvasManager.Init(CurrentLevel);
     }
 
     string GetLevelName(int level) => $"Level-{level}";
