@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     };
     Sprite _normalSprite;
     AttackPoints _attackPoints;
+    CameraShaker _cameraShaker;
     SpriteRenderer _spriteRenderer;
 
     public IEnumerator HandleTurn()
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
         
         _spriteRenderer.enabled = false;
         _deathParticles.Play();
+        _cameraShaker.ShakeCamera();
         yield return AudioManager.Instance.PlayPlayerDeathSound();
         yield return new WaitForSeconds(_deathParticles.main.duration);
         
@@ -79,6 +81,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        _cameraShaker = FindObjectOfType<CameraShaker>();
         _attackPoints = GetComponentInChildren<AttackPoints>();
     }
     
